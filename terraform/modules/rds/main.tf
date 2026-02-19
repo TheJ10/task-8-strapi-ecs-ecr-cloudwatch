@@ -1,13 +1,24 @@
-resource "aws_db_subnet_group" "jaspal_task7_db_subnet_group" {
-  name       = "jaspal-task7-db-subnet-group"
-  subnet_ids = var.subnet_ids
+data "aws_vpc" "default" {
+  default = true
 }
 
-resource "aws_db_instance" "jaspal_task7_db" {
-  identifier              = "jaspal-task7-strapi-db"
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+
+resource "aws_db_subnet_group" "jaspal_task8_db_subnet_group" {
+  name       = "jaspal-task8-db-subnet-group"
+  subnet_ids = data.aws_subnets.default.ids
+}
+
+resource "aws_db_instance" "jaspal_task8_db" {
+  identifier              = "jaspal-task8-strapi-db"
   engine                  = "postgres"
   engine_version          = "15"
-  instance_class          = "db.t3.micro"
+  instance_class          = "db.t3.small"
   allocated_storage       = 20
 
   db_name                 = var.db_name
@@ -18,5 +29,5 @@ resource "aws_db_instance" "jaspal_task7_db" {
   skip_final_snapshot     = true
   deletion_protection     = false
 
-  db_subnet_group_name    = aws_db_subnet_group.jaspal_task7_db_subnet_group.name
+  db_subnet_group_name    = aws_db_subnet_group.jaspal_task8_db_subnet_group.name
 }

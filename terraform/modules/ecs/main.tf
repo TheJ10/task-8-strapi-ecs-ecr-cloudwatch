@@ -1,9 +1,20 @@
-resource "aws_ecs_cluster" "jaspal_task7_cluster" {
-  name = "jaspal-task7-strapi-cluster"
+data "aws_vpc" "default" {
+  default = true
 }
 
-resource "aws_ecs_task_definition" "jaspal_task7_task" {
-  family                   = "jaspal-task7-strapi-task"
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+
+resource "aws_ecs_cluster" "jaspal_task8_cluster" {
+  name = "jaspal-task8-strapi-cluster"
+}
+
+resource "aws_ecs_task_definition" "jaspal_task8_task" {
+  family                   = "jaspal-task8-strapi-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "512"
@@ -12,7 +23,7 @@ resource "aws_ecs_task_definition" "jaspal_task7_task" {
 
   container_definitions = jsonencode([
     {
-      name  = "jaspal-task7-strapi-container"
+      name  = "jaspal-task8-strapi-container"
       image = "${var.ecr_repository_url}:${var.image_tag}"
 
       portMappings = [
@@ -43,21 +54,19 @@ resource "aws_ecs_task_definition" "jaspal_task7_task" {
           awslogs-stream-prefix = "ecs/jaspal-task8-strapi"
         }
       }
-
-
     }
   ])
 }
 
-resource "aws_ecs_service" "jaspal_task7_service" {
-  name            = "jaspal-task7-strapi-service"
-  cluster         = aws_ecs_cluster.jaspal_task7_cluster.id
-  task_definition = aws_ecs_task_definition.jaspal_task7_task.arn
+resource "aws_ecs_service" "jaspal_task8_service" {
+  name            = "jaspal-task8-strapi-service"
+  cluster         = aws_ecs_cluster.jaspal_task8_cluster.id
+  task_definition = aws_ecs_task_definition.jaspal_task8_task.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = var.subnet_ids
+    subnets          = data.aws_subnets.default.ids
     assign_public_ip = true
   }
 }

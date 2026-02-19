@@ -1,4 +1,4 @@
-name: CD - Terraform Deploy (Task-7 ECS)
+name: CD - Terraform Deploy 
 
 on:
   workflow_dispatch:

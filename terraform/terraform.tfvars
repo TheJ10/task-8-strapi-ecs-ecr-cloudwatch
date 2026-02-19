@@ -1,4 +1,4 @@
-image_tag         = "ee8b130"
+image_tag         = "latest"
 execution_role_arn = "arn:aws:iam::811738710312:role/ecs_fargate_taskRole"
 
 subnet_ids = [
@@ -6,6 +6,6 @@ subnet_ids = [
   "subnet-08965304a1bc70ce8"
 ]
 
-db_name     = "jaspal_task7_strapi"
-db_username = "jaspal_task7_user"
-db_password = "Jaspal@Task7#2026"
+db_name     = "jaspal_task8_strapi"
+db_username = "jaspal_task8_user"
+db_password = "Jaspaltask8"

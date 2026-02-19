@@ -5,10 +5,6 @@ variable "ecr_repository_url" {
 
 variable "execution_role_arn" {}
 
-variable "subnet_ids" {
-  type = list(string)
-}
-
 variable "log_group_name" {
   type = string
 }
