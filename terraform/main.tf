@@ -24,3 +24,7 @@ module "rds_jaspal_task7" {
 module "ecr_jaspal_task8" {
   source = "./modules/ecr"
 }
+
+module "cloudwatch_jaspal_task8" {
+  source = "./modules/cloudwatch"
+}
