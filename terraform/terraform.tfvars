@@ -1,5 +1,4 @@
 image_tag         = "ee8b130"
-dockerhub_repo    = "jaspaltiffinbox/strapi-task7"
 execution_role_arn = "arn:aws:iam::811738710312:role/ecs_fargate_taskRole"
 
 subnet_ids = [

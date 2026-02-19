@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "jaspal_task7_task" {
   container_definitions = jsonencode([
     {
       name  = "jaspal-task7-strapi-container"
-      image = "${var.dockerhub_repo}:${var.image_tag}"
+      image = "${var.ecr_repository_url}:${var.image_tag}"
 
       portMappings = [
         {

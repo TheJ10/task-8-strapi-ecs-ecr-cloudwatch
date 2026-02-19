@@ -1,5 +1,7 @@
 variable "image_tag" {}
-variable "dockerhub_repo" {}
+variable "ecr_repository_url" {
+  type = string
+}
 
 variable "execution_role_arn" {}
 
