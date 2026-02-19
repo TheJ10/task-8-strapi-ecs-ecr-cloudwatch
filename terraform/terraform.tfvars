@@ -1,4 +1,4 @@
-image_tag         = "latest"
+image_tag         = "8b6a601"
 execution_role_arn = "arn:aws:iam::811738710312:role/ecs_fargate_taskRole"
 
 subnet_ids = [

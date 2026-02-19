@@ -43,7 +43,17 @@ resource "aws_ecs_task_definition" "jaspal_task8_task" {
         { name = "DATABASE_NAME", value = var.db_name },
         { name = "DATABASE_USERNAME", value = var.db_username },
         { name = "DATABASE_PASSWORD", value = var.db_password },
-        { name = "DATABASE_SSL", value = "false" }
+        { name = "DATABASE_SSL", value = "true" },
+        { name = "DATABASE_SSL_REJECT_UNAUTHORIZED", value = "false" },
+        { name = "NODE_TLS_REJECT_UNAUTHORIZED", value = "0" },
+
+        { name = "APP_KEYS", value = "key1,key2,key3,key4" },
+        { name = "API_TOKEN_SALT", value = "api_token_salt_123" },
+        { name = "ADMIN_JWT_SECRET", value = "admin_jwt_secret_123" },
+        { name = "JWT_SECRET", value = "jwt_secret_123" },
+        { name = "TRANSFER_TOKEN_SALT", value = "transfer_token_salt_123" },
+        { name = "ENCRYPTION_KEY", value = "encryption_key_1234567890" }
+
       ]
 
       logConfiguration = {
