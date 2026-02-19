@@ -1,3 +1,8 @@
+variable "aws_region" {
+  type    = string
+  default = "us-east-1"
+}
+
 # Docker image info
 variable "image_tag" {
   description = "Docker image tag from CI"

@@ -34,6 +34,17 @@ resource "aws_ecs_task_definition" "jaspal_task7_task" {
         { name = "DATABASE_PASSWORD", value = var.db_password },
         { name = "DATABASE_SSL", value = "false" }
       ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = var.log_group_name
+          awslogs-region        = var.aws_region
+          awslogs-stream-prefix = "ecs/jaspal-task8-strapi"
+        }
+      }
+
+
     }
   ])
 }

@@ -6,6 +6,10 @@ module "ecs_jaspal_task8" {
   execution_role_arn = var.execution_role_arn
   subnet_ids          = var.subnet_ids
 
+  log_group_name = module.cloudwatch_jaspal_task8.log_group_name
+  aws_region     = var.aws_region
+
+
   db_host     = module.rds_jaspal_task7.db_endpoint
   db_name     = var.db_name
   db_username = var.db_username
