@@ -20,3 +20,7 @@ module "rds_jaspal_task7" {
   db_username = var.db_username
   db_password = var.db_password
 }
+
+module "ecr_jaspal_task8" {
+  source = "./modules/ecr"
+}
