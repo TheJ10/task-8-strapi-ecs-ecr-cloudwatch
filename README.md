@@ -1,14 +1,19 @@
-# Task-7: Strapi Deployment on AWS ECS using Terraform & GitHub Actions
-
+# Task-8: Deploy Strapi on AWS ECS Fargate using Terraform & GitHub Actions
 
 ## Project Overview
-This project demonstrates deploying a Strapi application on AWS ECS using Infrastructure as Code (Terraform) and CI/CD automation with GitHub Actions.
+This project demonstrates deploying a **Strapi headless CMS** on **AWS ECS Fargate** using **Terraform (Infrastructure as Code)** and **GitHub Actions for CI/CD**.  
+The application image is built and pushed to **Amazon ECR**, and the runtime environment is monitored using **Amazon CloudWatch**.
 
-The goal of Task-7 was to:
-- Containerize a Strapi application
-- Automate image build and push using GitHub Actions
-- Provision AWS infrastructure using Terraform
-- Deploy the application on ECS
+---
+
+## Objectives of Task-8
+- Containerize a Strapi application using Docker
+- Automate Docker image build and push to **Amazon ECR**
+- Provision AWS infrastructure using **Terraform (modular approach)**
+- Deploy Strapi on **ECS Fargate**
+- Configure **RDS PostgreSQL** as the backend database
+- Enable **CloudWatch logging and ECS metrics**
+- Troubleshoot and resolve real-world deployment issues
 
 ---
 
@@ -16,109 +21,128 @@ The goal of Task-7 was to:
 ```text
 GitHub Push
    ↓
-GitHub Actions (CI/CD)
+GitHub Actions (CI)
    ↓
 Docker Image Build
    ↓
-Container Registry (ECR / Docker Hub)
+Amazon ECR
    ↓
 Terraform Apply
    ↓
-AWS ECS Cluster
+AWS ECS Fargate
    ↓
-ECS Task Definition
+Strapi Application
+   ↓
+Amazon RDS (PostgreSQL)
+   ↓
+CloudWatch Logs & Metrics
 ```
+
 
 ---
 
 ## Technologies Used
-- Strapi (Node.js Headless CMS)
-- Docker
-- GitHub Actions (CI/CD)
-- Terraform (Infrastructure as Code)
-- AWS ECS
-- AWS EC2 / Fargate
-- AWS VPC & Security Groups
+- **Strapi** (Node.js Headless CMS)
+- **Docker**
+- **Terraform** (Modular IaC)
+- **GitHub Actions** (CI/CD)
+- **Amazon ECS (Fargate)**
+- **Amazon ECR**
+- **Amazon RDS (PostgreSQL)**
+- **Amazon CloudWatch**
+- **AWS VPC & Security Groups**
 
 ---
 
 ## Repository Structure
 ```text
 .
-├── strapi/                    # Strapi application source
-│   ├── Dockerfile
-│   ├── package.json
-│   └── config/
+├── strapi/ # Strapi application source
+│ ├── Dockerfile
+│ ├── package.json
+│ └── config/
 │
 ├── terraform/
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── outputs.tf
-│   ├── providers.tf
-│   └── modules/
-│       ├── ecs/
-│       ├── vpc/
-│       └── rds/
+│ ├── main.tf
+│ ├── variables.tf
+│ ├── backend.tf
+│ ├── providers.tf
+│ └── modules/
+│ ├── ecs/
+│ ├── rds/
+│ ├── ecr/
+│ └── cloudwatch/
+│
+├── screenshots/
 │
 └── .github/
-    └── workflows/
-        └── deploy.yml
+└── workflows/
+└── ci.yml
 ```
 
 ---
 
 ## CI/CD Workflow (GitHub Actions)
-The GitHub Actions pipeline performs the following steps:
-1. Checkout repository code
-2. Build Docker image for Strapi
-3. Push the image to a container registry
-4. Run Terraform to provision/update AWS infrastructure
-5. Create ECS cluster and task definition
 
-The workflow ensures infrastructure and application deployment are automated.
+### CI Pipeline
+- Triggers on push
+- Builds Docker image for Strapi
+- Authenticates with AWS
+- Pushes image to **Amazon ECR** with commit SHA tag
+
+### CD (Terraform)
+- Infrastructure provisioned using Terraform
+- ECS service pulls the latest image from ECR
+- Task redeploys automatically
 
 ---
 
 ## Infrastructure Provisioned via Terraform
-- ECS Cluster
+- ECS Cluster & Service (Fargate)
 - ECS Task Definition
-- Networking (VPC & subnets – reused default VPC)
-- Security Groups
-- Supporting Terraform modules for clean structure
-Terraform was used in a modular approach for clarity and maintainability.
+- Amazon ECR Repository
+- Amazon RDS PostgreSQL Instance
+- CloudWatch Log Group
+- Networking via default VPC (auto-discovered subnets)
 
-## Achievements / What Worked Successfully
-
-- Strapi application successfully containerized
-
--  Docker image build automated via GitHub Actions
-
-- CI/CD pipeline executed infrastructure provisioning
--  Real-world ECS deployment flow implemented
+Terraform was implemented using a **modular structure** for maintainability and clarity.
 
 ---
 
-## Limitation Encountered 
-During deployment, the ECS task failed to pull the container image due to restricted IAM permissions in the provided AWS account.
-
-### Key limitation:
-- IAM roles and policies (ECR access, task execution role permissions) could not be modified
-- ECS requires ecr:GetAuthorizationToken or equivalent permissions to pull images from private ECR
-- Repository policies and IAM role updates were restricted
-
-### Result:
-- ECS cluster and task definitions were created
-- Runtime container pull was blocked due to account-level permission restrictions
+## Monitoring & Observability
+- **CloudWatch Logs** configured using `awslogs` driver
+- ECS Metrics monitored:
+  - CPU Utilization
+  - Memory Utilization
+  - Task Count
+  - Network In / Network Out
 
 ---
 
-## Conclusion
-This project successfully demonstrates:
-- Infrastructure as Code with Terraform
-- CI/CD automation using GitHub Actions
-- Containerized Strapi deployment design for AWS ECS
+## Runtime Issues & Real-World Fixes
+During deployment, several real-world issues were encountered and resolved:
+
+- Image tag mismatch (`latest` vs commit SHA)
+- Missing Strapi production secrets
+- PostgreSQL SSL enforcement by AWS RDS
+- TLS certificate validation failures
+- ECS networking and security group restrictions
+
+All issues were fixed by properly configuring:
+- ECS task environment variables
+- PostgreSQL SSL settings
+- Node.js TLS behavior
+- Security group inbound rules
+
+---
+
+## Final Result
+- Strapi application successfully running on ECS Fargate
+- Admin panel accessible via ECS task public IP
+- Logs and metrics visible in CloudWatch
+- CI/CD pipeline functioning end-to-end
 
 ---
 
 ## Author
-Jaspal Gundla 
+**Jaspal Gundla**
