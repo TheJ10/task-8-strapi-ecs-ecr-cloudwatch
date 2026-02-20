@@ -28,5 +28,8 @@ module "ecr_jaspal_task8" {
 }
 
 module "cloudwatch_jaspal_task8" {
-  source = "./modules/cloudwatch"
+  source        = "./modules/cloudwatch"
+  cluster_name  = "jaspal-task8-strapi-cluster"
+  service_name  = "jaspal-task8-strapi-service"
+  region        = "us-east-1"
 }
